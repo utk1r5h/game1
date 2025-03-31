@@ -85,3 +85,111 @@ func DelCol(col int) bool {
 	}
 	return hasX
 }
+
+func main() {
+	initializeBoard()
+	initializeDisplayBoard()
+	RandomSpotGenerator()
+	
+	attempts := 0
+	gameOver := false
+	
+	for !gameOver {
+		fmt.Println("Avoid the hidden cross:")
+		printtheBoard(displayBoard)
+		
+		fmt.Println("\nOptions:")
+		fmt.Println("1. Reveal a position")
+		fmt.Println("2. Delete a row")
+		fmt.Println("3. Delete a column")
+		fmt.Print("Enter your choice (1-3): ")
+		
+		var choice int
+		fmt.Scan(&choice)
+		
+		switch choice {
+		case 1:
+
+			var row, col int
+			fmt.Print("Enter row (0-4): ")
+			fmt.Scan(&row)
+			fmt.Print("Enter column (0-4): ")
+			fmt.Scan(&col)
+			
+
+			if row < 0 || row >= SIZE || col < 0 || col >= SIZE {
+				fmt.Println("Invalid coordinates! Please enter values between 0 and 4.")
+				continue
+			}
+			
+
+			if displayBoard[row][col] != '?' {
+				fmt.Println("You already revealed this position!")
+				continue
+			}
+			
+			attempts++
+			
+
+			if board[row][col] == 'X' {
+				displayBoard[row][col] = 'X'
+				gameOver = true
+				fmt.Println("\nOh no! You found the cross!")
+				printtheBoard(displayBoard)
+				fmt.Printf("Game over! You survived for %d turns.\n", attempts)
+			} else {
+				displayBoard[row][col] = ' '
+				fmt.Println("\nGood job! No cross here. You're safe for now.")
+			}
+			
+		case 2:
+
+			var row int
+			fmt.Print("Enter row to delete (0-4): ")
+			fmt.Scan(&row)
+			
+
+			if row < 0 || row >= SIZE {
+				fmt.Println("Invalid row! Please enter a value between 0 and 4.")
+				continue
+			}
+			
+			attempts++
+			
+			if DelRow(row) {
+				gameOver = true
+				fmt.Println("\nOh no! You deleted the row with the cross!")
+				printtheBoard(displayBoard)
+				fmt.Printf("Game over! You survived for %d turns.\n", attempts)
+			} else {
+				fmt.Println("\nGood job! No cross in this row. You're safe for now.")
+			}
+			
+		case 3:
+
+			var col int
+			fmt.Print("Enter column to delete (0-4): ")
+			fmt.Scan(&col)
+			
+
+			if col < 0 || col >= SIZE {
+				fmt.Println("Invalid column! Please enter a value between 0 and 4.")
+				continue
+			}
+			
+			attempts++
+			
+			if DelCol(col) {
+				gameOver = true
+				fmt.Println("\nOh no! You deleted the column with the cross!")
+				printtheBoard(displayBoard)
+				fmt.Printf("Game over! You survived for %d turns.\n", attempts)
+			} else {
+				fmt.Println("\nGood job! No cross in this column. You're safe for now.")
+			}
+			
+		default:
+			fmt.Println("Invalid choice! Please enter 1, 2, or 3.")
+		}
+	}
+}
