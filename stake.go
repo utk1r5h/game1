@@ -59,6 +59,7 @@ func DelRow(row int) bool {
 
 	for j:=0; j<SIZE; j++{
 		if board[row][j] == 'X'{
+			hasX = true
 
 		}
 	}
@@ -76,6 +77,7 @@ func DelCol(col int) bool {
 
 	for i:=0; i<SIZE; i++{
 		if board[i][col] == 'X'{
+			hasX = true
 
 		}
 	}
@@ -85,6 +87,26 @@ func DelCol(col int) bool {
 	}
 	return hasX
 }
+
+func PrintBombExplosion(){
+	 explosion := []string{
+		"    BOOM!    ",
+		"    . . .    ",
+		"   ( * * )   ",
+		"   (  *  )   ",
+		"  (   *   )  ",
+		"   `-'-'`    ",
+	}
+	for _, line := range explosion {
+		fmt.Println(line)
+	}
+}
+
+func ClearScreen() {
+	
+	fmt.Print("\033[H\033[2J")
+}
+
 
 func main() {
 	initializeBoard()
@@ -136,6 +158,13 @@ func main() {
 				gameOver = true
 				fmt.Println("\nOh no! You found the cross!")
 				printtheBoard(displayBoard)
+
+				time.Sleep(1 * time.Second)
+	      ClearScreen()
+				PrintBombExplosion()
+	      time.Sleep(1 * time.Second)
+			
+
 				fmt.Printf("Game over! You survived for %d turns.\n", attempts)
 			} else {
 				displayBoard[row][col] = ' '
@@ -160,6 +189,12 @@ func main() {
 				gameOver = true
 				fmt.Println("\nOh no! You deleted the row with the cross!")
 				printtheBoard(displayBoard)
+			
+				time.Sleep(1 * time.Second)
+	      ClearScreen()
+				PrintBombExplosion()
+	      time.Sleep(1 * time.Second)
+				
 				fmt.Printf("Game over! You survived for %d turns.\n", attempts)
 			} else {
 				fmt.Println("\nGood job! No cross in this row. You're safe for now.")
@@ -183,6 +218,11 @@ func main() {
 				gameOver = true
 				fmt.Println("\nOh no! You deleted the column with the cross!")
 				printtheBoard(displayBoard)
+				time.Sleep(1 * time.Second)
+	      ClearScreen()
+				PrintBombExplosion()
+	      time.Sleep(1 * time.Second)
+				
 				fmt.Printf("Game over! You survived for %d turns.\n", attempts)
 			} else {
 				fmt.Println("\nGood job! No cross in this column. You're safe for now.")
